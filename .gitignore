@@ -1,1 +1,15 @@
+##machine specific directory
 /azure/.terraform
+
+##tf state files
+*.tfstate
+*.tfstate.backup
+
+##crash logs
+crash.log
+
+##sensitivie local vars
+terraform.tfvars
+
+## plan files
+*.tfplan
