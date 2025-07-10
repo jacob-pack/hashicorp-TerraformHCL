@@ -13,3 +13,4 @@ terraform.tfvars
 
 ## plan files
 *.tfplan
+.DS_Store
