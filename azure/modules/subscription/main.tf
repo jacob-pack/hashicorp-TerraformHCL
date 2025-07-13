@@ -13,7 +13,7 @@ resource "azapi_resource" "subscription" {
   body = {
     properties = {
       additionalProperties = {
-        subscriptionTenantId = local.subscriptionTenantId
+        subscriptionTenantId = local.resourceSubscriptionTenantID
       }
       billingScope = local.resourceBillingScope
       displayName = local.resourceName
