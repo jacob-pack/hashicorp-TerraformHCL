@@ -2,13 +2,13 @@ provider "azurerm" {
   features {}
 }
 
-provider "azapi"{
-  features{}
- }
+provider "azapi" {
+  features {}
+}
 
- variable "storageAccountName" {
-   
- }
+variable "storageAccountName" {
+
+}
 
 resource "azurerm_resource_group" "rg-JSP-storage-eu2" {
   location = "East US"
