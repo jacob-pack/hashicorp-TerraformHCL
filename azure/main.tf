@@ -6,8 +6,9 @@ provider "azapi" {
   features {}
 }
 
-variable "storageAccountName" {
-
+locals {
+  storageAccountLocation = "East US 2"
+  storageAccountName = "rg-jsp-"
 }
 
 resource "azurerm_resource_group" "rg-JSP-storage-eu2" {
