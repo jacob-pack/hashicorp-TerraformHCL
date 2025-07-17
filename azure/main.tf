@@ -1,32 +1,27 @@
-provider "azurerm" {
-  features {}
-}
-
 provider "azapi" {
   features {}
 }
 
 locals {
-  storageAccountLocation = "East US 2"
-  storageAccountName = "rg-jsp-storage-eu2-00"
+  primaryRegion = "eastus2"
+  primaryRegionAbbreviation = "eu2"
+  envString = "dev"
+  systemName = "jsp"
+  orgName = "orgName"
+  subscriptionId = "6f224d82-ff8c-45ee-a61d-7fd2f93a73be"
+  allResourceGroupDescriptors = ["storage","network","devops"]
 }
 
 module "resourceGroups" {
-  source = "./modules/resourceGroup"
-  name = "rg-jsp-storage-eu2-001"
-  parentId = "parentId"
-  location = "eastus2"
+  source   = "./modules/resourceGroup"
+  envString = local.envString
+  systemName = local.systemName
+  orgName = local.orgName
+  parentId = "" //In the TF/ARM model RGs are considered root resources. Otherwise I'd define subscriptionID here
+  location = local.primaryRegion
+  locationAbbreviation = local.primaryRegionAbbreviation
+  allResourceGroupDescriptors = local.allResourceGroupDescriptors
 }
-
-
-resource "azurerm_resource_group" "rg-JSP-storage-eu2" {
-  location = "East US"
-  name     = "rg-jsp-storage-eu2"
-}
-
-
-
-
 
 module "storageAccount" {
   source                   = "./modules/storageAccount"

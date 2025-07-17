@@ -1,14 +1,9 @@
 resource "azapi_resource" "resourceGroup" {
+    for_each = var.allResourceGroupDescriptors
+
   type = "Microsoft.Resources/resourceGroups@2025-04-01"
-  name = resourceGroup
+  name = "rg-${systemName}-${envString}-${resourceGroupDescriptor}-${locationAbbreviation}-001"
   parent_id = parentId
-  location = 
-  tags = {
-    {customized property} = "string"
+  location = location
+  allResourceGroupDescriptors = allResourceGroupDescriptors
   }
-  body = {
-    managedBy = "string"
-    properties = {
-    }
-  }
-}
