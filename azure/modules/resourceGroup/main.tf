@@ -2,8 +2,8 @@ resource "azapi_resource" "resourceGroup" {
     for_each = var.allResourceGroupDescriptors
 
   type = "Microsoft.Resources/resourceGroups@2025-04-01"
-  name = "rg-${systemName}-${envString}-${resourceGroupDescriptor}-${locationAbbreviation}-001"
-  parent_id = parentId
-  location = location
-  allResourceGroupDescriptors = allResourceGroupDescriptors
+  name = "rg-${var.systemName}-${var.envString}-${var.resourceGroupDescriptor}-${var.locationAbbreviation}-001"
+  parent_id = var.parentId
+  location = var.location
+  allResourceGroupDescriptors = var.allResourceGroupDescriptors
   }
