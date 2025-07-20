@@ -24,6 +24,9 @@ variable "ignoreMissingProperty" {
   type = string
 }
 //-------------Resource Vars Below--------------
+variable "resourceType" {
+  type = string
+}
 variable "addressPrefixes" {
   type = string
 }

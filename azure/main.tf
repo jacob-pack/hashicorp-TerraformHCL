@@ -83,11 +83,19 @@ locals {
 }
 // --------------------------- Modules Begin Below here ------------------------------------
 module "subscription" {
-  source       = "./modules/subscription"
-  resourceType = local.subscriptionResourceType
-  parentId     = local.subscriptionParentId
-  tenantId     = local.subscriptionTenantID
-  billingScope = local.subscriptionBillingScope
+  source                  = "./modules/subscription"
+  envString               = local.envString
+  systemName              = local.systemName
+  orgName                 = local.orgName
+  location                = local.primaryRegion
+  locationAbbreviation    = local.primaryRegionAbbreviation
+  resourceType            = local.subscriptionResourceType
+  parentId                = local.subscriptionParentId
+  tenantId                = local.subscriptionTenantID
+  billingScope            = local.subscriptionBillingScope
+  schemaValidationEnabled = local.schemaValidationEnabled
+  ignoreMissingProperty   = local.ignoreMissingProperty
+  ignoreCasing            = local.ignoreCasing
 }
 
 module "virtualNetwork" {
@@ -121,6 +129,9 @@ module "resourceGroups" {
   location                    = local.primaryRegion
   locationAbbreviation        = local.primaryRegionAbbreviation
   allResourceGroupDescriptors = local.allResourceGroupDescriptors
+  schemaValidationEnabled     = local.schemaValidationEnabled
+  ignoreMissingProperty       = local.ignoreMissingProperty
+  ignoreCasing                = local.ignoreCasing
 }
 
 module "expressRouteCircuit" {
