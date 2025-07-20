@@ -24,8 +24,30 @@ locals {
   //subscription vars
   subscriptionResourceType = "Microsoft.Subscription/aliases@2024-08-01-preview"
   subscriptionParentId     = ""
-  subscriptionTenantID      = ""
+  subscriptionTenantID     = ""
   subscriptionBillingScope = ""
+
+  //vnet vars
+  vnetResourceType                = "Microsoft.Network/virtualNetworks@2024-05-01"
+  vnetAddressPrefixes             = "10.0.0.0/16"
+  vnetEnableDdosProtection        = false
+  vnetEncryptionEnabled           = "true"
+  vnetEncryptionEnforcement       = "AllowUnencrypted"
+  vnetPrivateEndpointVNetPolicies = "Disabled"
+  vnetSubnets                     = ""
+  vnetVirtualNetworkPeerings      = ""
+
+  //expressRouteCircuit vars
+  expressRouteCircuitResourceType               = "Microsoft.Network/expressRouteCircuits@2024-05-01"
+  expressRouteCircuitSkuName                    = "Standard_MeteredData"
+  expressRouteCircuitSkuFamily                  = "MeteredData"
+  expressRouteCircuitSkuTier                    = "Standard"
+  expressRouteCircuitAllowClassicOperations     = false
+  expressRouteCircuitGlobalReachEnabled         = false
+  expressRouteCircuitSvcProviderBandwidthMbps   = 50
+  expressRouteCircuitSvcProviderPeeringLocation = "Atlanta"
+  expressRouteCircuitSvcProviderName            = "Century Link Cloud Connect" //now known as Lumen
+
 
   //resourcegroup vars
   resourceGroupResourceType   = "Microsoft.Resources/resourceGroups@2025-04-01"
@@ -57,15 +79,6 @@ locals {
   supportsHttpsTrafficOnly         = true
 
 
-  //vnet vars
-  vnetResourceType                = "Microsoft.Network/virtualNetworks@2024-05-01"
-  vnetAddressPrefixes             = "10.0.0.0/16"
-  vnetEnableDdosProtection        = false
-  vnetEncryptionEnabled           = "true"
-  vnetEncryptionEnforcement       = "AllowUnencrypted"
-  vnetPrivateEndpointVNetPolicies = "Disabled"
-  vnetSubnets                     = ""
-  vnetVirtualNetworkPeerings      = ""
 
 }
 // --------------------------- Modules Begin Below here ------------------------------------
@@ -75,7 +88,27 @@ module "subscription" {
   parentId     = local.subscriptionParentId
   tenantId     = local.subscriptionTenantID
   billingScope = local.subscriptionBillingScope
+}
 
+module "virtualNetwork" {
+  source                      = "./modules/virtualNetwork"
+  envString                   = local.envString
+  systemName                  = local.systemName
+  orgName                     = local.orgName
+  parentId                    = local.networkResourceGroupID
+  location                    = local.primaryRegion
+  locationAbbreviation        = local.primaryRegionAbbreviation
+  resourceType                = local.vnetResourceType
+  schemaValidationEnabled     = local.schemaValidationEnabled
+  ignoreMissingProperty       = local.ignoreMissingProperty
+  ignoreCasing                = local.ignoreCasing
+  addressPrefixes             = local.vnetAddressPrefixes
+  enableDdosProtection        = local.vnetEnableDdosProtection
+  encryptionEnabled           = local.vnetEncryptionEnabled
+  encryptionEnforcement       = local.vnetEncryptionEnforcement
+  privateEndpointVNetPolicies = local.vnetPrivateEndpointVNetPolicies
+  subnets                     = local.vnetSubnets
+  virtualNetworkPeerings      = local.vnetVirtualNetworkPeerings
 }
 
 module "resourceGroups" {
@@ -89,6 +122,29 @@ module "resourceGroups" {
   locationAbbreviation        = local.primaryRegionAbbreviation
   allResourceGroupDescriptors = local.allResourceGroupDescriptors
 }
+
+module "expressRouteCircuit" {
+  source                         = "./modules/expressRouteCircuit"
+  envString                      = local.envString
+  systemName                     = local.systemName
+  orgName                        = local.orgName
+  parentId                       = local.networkResourceGroupID
+  location                       = local.primaryRegion
+  locationAbbreviation           = local.primaryRegionAbbreviation
+  resourceType                   = local.expressRouteCircuitResourceType
+  skuName                        = local.expressRouteCircuitSkuName
+  skuFamily                      = local.expressRouteCircuitSkuFamily
+  skuTier                        = local.expressRouteCircuitSkuTier
+  allowClassicOperations         = local.expressRouteCircuitAllowClassicOperations
+  globalReachEnabled             = local.expressRouteCircuitGlobalReachEnabled
+  serviceProviderBandwidthMbps   = local.expressRouteCircuitSvcProviderBandwidthMbps
+  serviceProviderPeeringLocation = local.expressRouteCircuitSvcProviderPeeringLocation
+  serviceProviderName            = local.expressRouteCircuitSvcProviderName
+  ignoreCasing                   = local.ignoreCasing
+  schemaValidationEnabled        = local.schemaValidationEnabled
+  ignoreMissingProperty          = local.ignoreMissingProperty
+}
+
 
 module "storageAccount" {
   source                           = "./modules/storageAccount"
@@ -122,26 +178,5 @@ module "storageAccount" {
   ignoreCasing                     = local.ignoreCasing
   schemaValidationEnabled          = local.schemaValidationEnabled
   ignoreMissingProperty            = local.ignoreMissingProperty
-
 }
 
-module "virtualNetwork" {
-  source                      = "./modules/virtualNetwork"
-  envString                   = local.envString
-  systemName                  = local.systemName
-  orgName                     = local.orgName
-  parentId                    = local.networkResourceGroupID
-  location                    = local.primaryRegion
-  locationAbbreviation        = local.primaryRegionAbbreviation
-  resourceType                = local.vnetResourceType
-  schemaValidationEnabled     = local.schemaValidationEnabled
-  ignoreMissingProperty       = local.ignoreMissingProperty
-  ignoreCasing                = local.ignoreCasing
-  addressPrefixes             = local.vnetAddressPrefixes
-  enableDdosProtection        = local.vnetEnableDdosProtection
-  encryptionEnabled           = local.vnetEncryptionEnabled
-  encryptionEnforcement       = local.vnetEncryptionEnforcement
-  privateEndpointVNetPolicies = local.vnetPrivateEndpointVNetPolicies
-  subnets                     = local.vnetSubnets
-  virtualNetworkPeerings      = local.vnetVirtualNetworkPeerings
-}

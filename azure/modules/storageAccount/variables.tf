@@ -1,25 +1,30 @@
-variable "systemName" {
-  type        = string
-  description = "system name"
-}
-variable "location" {
-  type        = string
-  description = "storage account location"
-}
-variable "locationAbbreviation" {
-  type        = string
-  description = "storage account location abbreviation"
-}
+//--------standard system and environment vars below-------
 variable "envString" {
-  type        = string
-  description = "environment"
-
+  type = string
+}
+variable "systemName" {
+  type = string
 }
 variable "orgName" {
-  type        = string
-  description = "org name"
-
+  type = string
 }
+variable "location" {
+  type = string
+}
+variable "locationAbbreviation" {
+  type = string
+}
+variable "ignoreCasing" {
+  type = string
+}
+variable "schemaValidationEnabled" {
+  type = string
+}
+variable "ignoreMissingProperty" {
+  type = string
+}
+//-------------Resource Vars Below--------------
+
 variable "parentId" {
   type        = string
   description = "storage account resource group id"
@@ -83,15 +88,6 @@ variable "publicNetworkAccess" {
   type = string
 }
 variable "supportsHttpsTrafficOnly" {
-  type = bool
-}
-variable "ignoreCasing" {
-  type = bool
-}
-variable "ignoreMissingProperty" {
-  type = bool
-}
-variable "schemaValidationEnabled" {
   type = bool
 }
 variable "storageAccountResourceType" {

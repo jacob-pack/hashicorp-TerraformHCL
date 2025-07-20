@@ -20,32 +20,32 @@ locals {
 
 resource "azapi_resource" "expressRouteCircuit" {
   body = {
-    ignore_casing             = local.ignoreCasing
-    ignore_missing_property   = local.ignoreMissingProperty
-    location                  = local.location
-    name                      = local.name
-    schema_validation_enabled = local.schemaValidationEnabled
-    type                      = local.type
+    ignore_casing             = var.ignoreCasing
+    ignore_missing_property   = var.ignoreMissingProperty
+    location                  = var.location
+    name                      = var.name
+    schema_validation_enabled = var.schemaValidationEnabled
+    type                      = var.type
 
     sku = {
-      family = local.skuFamily
-      name   = local.skuName
-      tier   = local.skuTier
+      family = var.skuFamily
+      name   = var.skuName
+      tier   = var.skuTier
     }
 
     properties = {
-      allowClassicOperations    = local.allowClassicOperations
+      allowClassicOperations    = var.allowClassicOperations
       authorizations            = []
-      circuitProvisioningState  = local.circuitProvisioningState
-      enableDirectPortRateLimit = local.enableDirectPortRateLimit
+      circuitProvisioningState  = var.circuitProvisioningState
+      enableDirectPortRateLimit = var.enableDirectPortRateLimit
       gatewayManagerEtag        = ""
-      globalReachEnabled        = local.globalReachEnabled
+      globalReachEnabled        = var.globalReachEnabled
       peerings                  = []
       serviceKey                = "53d96a39-433e-4e4e-a830-6089d3f37a3c"
       serviceProviderProperties = {
-        bandwidthInMbps     = local.serviceProviderBandwidthMbps
-        peeringLocation     = local.serviceProviderPeeringLocation
-        serviceProviderName = local.serviceProviderName
+        bandwidthInMbps     = var.serviceProviderBandwidthMbps
+        peeringLocation     = var.serviceProviderPeeringLocation
+        serviceProviderName = var.serviceProviderName
       }
       serviceProviderProvisioningState = "NotProvisioned"
     }

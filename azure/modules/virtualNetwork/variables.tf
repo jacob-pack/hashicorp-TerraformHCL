@@ -1,54 +1,50 @@
-variable "location" {
-    type = string
-}
-variable "locationAbbreviation" {
-    type = string
-}
-variable "locationAbbreviation" {
-    type = string
-}
-variable "resourceType" {
-    type = string
-}
+//--------standard system and environment vars below-------
 variable "envString" {
-    type = string
+  type = string
 }
 variable "systemName" {
-    type = string
+  type = string
 }
 variable "orgName" {
-    type = string
+  type = string
 }
-variable "schemaValidationEnabled" {
-    type = bool
+variable "location" {
+  type = string
 }
-variable "ignoreMissingProperty" {
-    type = bool
-}
-variable "addressPrefixes" {
-    type = string
-}
-variable "enableDdosProtection" {
-    type = bool
-}    
-variable "encryptionEnabled" {
-    type = bool
-}
-variable "parentId" {
-    type = string
+variable "locationAbbreviation" {
+  type = string
 }
 variable "ignoreCasing" {
-    type = string
+  type = string
+}
+variable "schemaValidationEnabled" {
+  type = string
+}
+variable "ignoreMissingProperty" {
+  type = string
+}
+//-------------Resource Vars Below--------------
+variable "addressPrefixes" {
+  type = string
+}
+variable "enableDdosProtection" {
+  type = bool
+}
+variable "encryptionEnabled" {
+  type = bool
+}
+variable "parentId" {
+  type = string
 }
 variable "encryptionEnforcement" {
-    type = string
+  type = string
 }
 variable "privateEndpointVNetPolicies" {
-    type = string
+  type = string
 }
 variable "subnets" {
-    type = string
+  type = string
 }
 variable "virtualNetworkPeerings" {
-    type = string
+  type = string
 }
