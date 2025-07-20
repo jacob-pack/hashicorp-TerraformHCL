@@ -1,11 +1,15 @@
+locals {
+  storageAccountName = "st${var.systemName}${var.envString}001"
+}
+
 resource "azapi_resource" "storageAccountResource" {
   ignore_casing             = var.ignoreCasing
   ignore_missing_property   = var.ignoreMissingProperty
   location                  = var.location
-  name                      = "st${var.systemName}${var.envString}001"
-  parent_id                 = ""
+  name                      = local.storageAccountName
+  parent_id                 = var.storageResourceGroupID
   schema_validation_enabled = var.schemaValidationEnabled
-  type                      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  type                      = var.storageAccountResourceType
   body = {
     sku = {
       name = var.storageAccountSku

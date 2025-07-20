@@ -22,11 +22,13 @@ locals {
   subscriptionId            = "6f224d82-ff8c-45ee-a61d-7fd2f93a73be"
 
   //resourcegroup vars
+  resourceGroupResourceType   = "Microsoft.Resources/resourceGroups@2025-04-01"
   allResourceGroupDescriptors = ["storage", "network", "devops"]
   storageResourceGroupID      = ""
   networkResourceGroupID      = ""
 
   //storageaccount vars
+  storageAccountResourceType       = "Microsoft.Storage/storageAccounts@2023-05-01"
   storageAccountSku                = "Standard_LRS"
   storageAccountKind               = "StorageV2"
   storageAccessTier                = "Hot"
@@ -60,12 +62,13 @@ locals {
   vnetVirtualNetworkPeerings      = ""
 
 }
-
+// --------------------------- Modules Begin Below here ------------------------------------
 module "resourceGroups" {
   source                      = "./modules/resourceGroup"
   envString                   = local.envString
   systemName                  = local.systemName
   orgName                     = local.orgName
+  resourceGroupResourceType   = local.resourceGroupResourceType
   parentId                    = "" //In the TF/ARM model RGs are considered root resources. Otherwise I'd define subscriptionID here
   location                    = local.primaryRegion
   locationAbbreviation        = local.primaryRegionAbbreviation
@@ -80,6 +83,7 @@ module "storageAccount" {
   parentId                         = local.storageResourceGroupID
   location                         = local.primaryRegion
   locationAbbreviation             = local.primaryRegionAbbreviation
+  storageAccountResourceType       = local.storageAccountResourceType
   storageAccountSku                = local.storageAccountSku
   storageAccountKind               = local.storageAccountKind
   storageAccessTier                = local.storageAccessTier

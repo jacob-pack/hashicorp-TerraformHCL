@@ -32,4 +32,7 @@ variable "orgName" {
   type        = string
   description = "represents the abbreviation for the org name"
 }
+variable "resourceGroupResourceType" {
+  type        = string
+}
 

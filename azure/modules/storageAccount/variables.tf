@@ -94,6 +94,9 @@ variable "ignoreMissingProperty" {
 variable "schemaValidationEnabled" {
   type = bool
 }
+variable "storageAccountResourceType" {
+  type = string
+}
 
 
 
