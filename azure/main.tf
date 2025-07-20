@@ -3,14 +3,14 @@ provider "azapi" {
 }
 
 //In a production environment I would define the variables in one tfvars file/env (dev/tst/uat/prd)
-//This would allow me to reuse main and adjust resource config per envioronment via variables
+//This would allow me to reuse main and adjust resource config per environment via variables
 
 locals {
 
   //standard AzAPI-TF Vars
-  ignore_casing             = false
-  ignore_missing_property   = false
-  schema_validation_enabled = true
+  ignoreCasing            = false
+  ignoreMissingProperty   = false
+  schemaValidationEnabled = true
 
 
   //system vars
@@ -24,6 +24,7 @@ locals {
   //resourcegroup vars
   allResourceGroupDescriptors = ["storage", "network", "devops"]
   storageResourceGroupID      = ""
+  networkResourceGroupID      = ""
 
   //storageaccount vars
   storageAccountSku                = "Standard_LRS"
@@ -46,6 +47,18 @@ locals {
   networkAclsDefaultAction         = "Deny"
   publicNetworkAccess              = "Disabled"
   supportsHttpsTrafficOnly         = true
+
+
+  //vnet vars
+  vnetResourceType                = "Microsoft.Network/virtualNetworks@2024-05-01"
+  vnetAddressPrefixes             = "10.0.0.0/16"
+  vnetEnableDdosProtection        = false
+  vnetEncryptionEnabled           = "true"
+  vnetEncryptionEnforcement       = "AllowUnencrypted"
+  vnetPrivateEndpointVNetPolicies = "Disabled"
+  vnetSubnets                     = ""
+  vnetVirtualNetworkPeerings      = ""
+
 }
 
 module "resourceGroups" {
@@ -87,14 +100,29 @@ module "storageAccount" {
   networkAclsDefaultAction         = local.networkAclsDefaultAction
   publicNetworkAccess              = local.publicNetworkAccess
   supportsHttpsTrafficOnly         = local.supportsHttpsTrafficOnly
-  ignoreCasing                     = local.ignore_casing
-  schemaValidationEnabled          = local.schema_validation_enabled
-  ignoreMissingProperty            = local.ignore_missing_property
+  ignoreCasing                     = local.ignoreCasing
+  schemaValidationEnabled          = local.schemaValidationEnabled
+  ignoreMissingProperty            = local.ignoreMissingProperty
 
 }
 
 module "virtualNetwork" {
-  source = "./modules/virtualNetwork"
-
-
+  source                      = "./modules/virtualNetwork"
+  envString                   = local.envString
+  systemName                  = local.systemName
+  orgName                     = local.orgName
+  parentId                    = local.networkResourceGroupID
+  location                    = local.primaryRegion
+  locationAbbreviation        = local.primaryRegionAbbreviation
+  resourceType                = local.vnetResourceType
+  schemaValidationEnabled     = local.schemaValidationEnabled
+  ignoreMissingProperty       = local.ignoreMissingProperty
+  ignoreCasing                = local.ignoreCasing
+  addressPrefixes             = local.vnetAddressPrefixes
+  enableDdosProtection        = local.vnetEnableDdosProtection
+  encryptionEnabled           = local.vnetEncryptionEnabled
+  encryptionEnforcement       = local.vnetEncryptionEnforcement
+  privateEndpointVNetPolicies = local.vnetPrivateEndpointVNetPolicies
+  subnets                     = local.vnetSubnets
+  virtualNetworkPeerings      = local.vnetVirtualNetworkPeerings
 }
