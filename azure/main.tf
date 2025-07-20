@@ -21,6 +21,12 @@ locals {
   orgName                   = "orgName"
   subscriptionId            = "6f224d82-ff8c-45ee-a61d-7fd2f93a73be"
 
+  //subscription vars
+  subscriptionResourceType = "Microsoft.Subscription/aliases@2024-08-01-preview"
+  subscriptionParentId     = ""
+  subscriptionTenantID      = ""
+  subscriptionBillingScope = ""
+
   //resourcegroup vars
   resourceGroupResourceType   = "Microsoft.Resources/resourceGroups@2025-04-01"
   allResourceGroupDescriptors = ["storage", "network", "devops"]
@@ -63,6 +69,15 @@ locals {
 
 }
 // --------------------------- Modules Begin Below here ------------------------------------
+module "subscription" {
+  source       = "./modules/subscription"
+  resourceType = local.subscriptionResourceType
+  parentId     = local.subscriptionParentId
+  tenantId     = local.subscriptionTenantID
+  billingScope = local.subscriptionBillingScope
+
+}
+
 module "resourceGroups" {
   source                      = "./modules/resourceGroup"
   envString                   = local.envString

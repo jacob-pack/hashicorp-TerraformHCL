@@ -1,4 +1,12 @@
-variable "storage_account_name" {
-  type        = string
-  description = "Name of the storage account to create"
+variable "resourceType" {
+  type = string
+}
+variable "parentId" {
+  type = string
+}
+variable "tenantId" {
+  type = string
+}
+variable "billingScope" {
+  type = string
 }
